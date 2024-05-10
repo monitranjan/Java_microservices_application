@@ -5,10 +5,16 @@ spring:
   application:
     name: "configserver"
   profiles:
-    active: native
+    active: git
   cloud:
     config:
       server:
-        native:
+        git:
+          uri: "https://github.com/eazybytes/eazybytes-config.git"
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+#        native:
 #          search-locations: "classpath:/config"
-          search-locations: "file:///Users/monitranjan//Desktop//Springboot//config"
+#          search-locations: "file:///Users/monitranjan//Desktop//Springboot//config"
