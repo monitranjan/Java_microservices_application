@@ -1,6 +1,10 @@
 server:
   port: 9000
 spring:
+  application:
+    name: "cards"
+  profiles:
+    active: "prod"
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
@@ -14,15 +18,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-build:
-  version: "3.0"
-
-cards:
-  message: "Welcome to cards related local APIs "
-  contactDetails:
-    name: "Dragos Lech - Developer"
-    email: "dragos@eazybank.com"
-  onCallSupport:
-    - (412) 419-3491
-    - (915) 382-1932
+  config:
+    import:
+      - "optional:configserver:http://localhost:8071"
