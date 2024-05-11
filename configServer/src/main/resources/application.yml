@@ -10,7 +10,7 @@ spring:
     config:
       server:
         git:
-          uri: "https://github.com/eazybytes/eazybytes-config.git"
+          uri: "https://github.com/monitranjan/microservice-config.git"
           default-label: main
           timeout: 5
           clone-on-start: true
@@ -18,5 +18,26 @@ spring:
 #        native:
 #          search-locations: "classpath:/config"
 #          search-locations: "file:///Users/monitranjan//Desktop//Springboot//config"
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    user: "guest"
+    password: "guest"
+
 encrypt:
   key: "45D81EC1EF61DF9AD8D3E5BB397F9"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
