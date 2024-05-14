@@ -84,7 +84,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>monitranjan2050/${project.artifactId}:s6</image>
+						<image>monitranjan2050/${project.artifactId}:s7</image>
 					</to>
 				</configuration>
 			</plugin>
@@ -92,9 +92,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<image>
-						<name>monitranjan2050/${project.artifactId}:s4</name>
-					</image>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
