@@ -95,7 +95,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>monitranjan2050/${project.artifactId}:s8</image>
+						<image>monitranjan2050/${project.artifactId}:s9</image>
 					</to>
 				</configuration>
 			</plugin>
