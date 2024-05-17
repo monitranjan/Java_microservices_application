@@ -8,10 +8,14 @@ import com.monit.cards.exception.ResourceNotFoundException;
 import com.monit.cards.mapper.CardsMapper;
 import com.monit.cards.repository.CardsRepository;
 import com.monit.cards.service.ICardsService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Random;
 
+@Service
+@AllArgsConstructor
 public class CardsServiceImpl implements ICardsService {
     private CardsRepository cardsRepository;
 

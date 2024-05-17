@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api",produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CardsController {
 
-    private ICardsService cardsService;
+    private final ICardsService cardsService;
 
     @Value("${build.version}")
     private String buildVersion;
@@ -35,8 +35,9 @@ public class CardsController {
     @Autowired
     private CardsContactInfoDto cardsContactInfoDto;
 
-    public CardsController(Environment environment) {
+    public CardsController(Environment environment, ICardsService iCardsService) {
         this.environment = environment;
+        this.cardsService = iCardsService;
     }
 
     @PostMapping("/create")

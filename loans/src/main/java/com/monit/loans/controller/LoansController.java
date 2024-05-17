@@ -33,9 +33,10 @@ public class LoansController {
     @Value(value = "${build.version}")
     private String buildVersion;
 
-    public LoansController(Environment environment, LoansInfoDto loansInfoDto) {
+    public LoansController(Environment environment, LoansInfoDto loansInfoDto, ILoansService iLoansService) {
         this.environment = environment;
         this.loansInfoDto = loansInfoDto;
+        this.loansService = iLoansService;
     }
 
     @PostMapping("/create")

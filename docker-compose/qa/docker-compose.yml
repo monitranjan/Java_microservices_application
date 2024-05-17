@@ -30,7 +30,7 @@ services:
       service: microservice-db-config
 
   configserver:
-    image: "monitranjan2050/configserver:s7"
+    image: "monitranjan2050/configserver:s8"
     container_name: configserver_ms
     ports:
       - "8071:8071"
@@ -43,8 +43,27 @@ services:
       file: common-config.yml
       service: microservice-base-config
 
+  eurekaserver:
+    image: "monitranjan2050/eurekaserver:s8"
+    container_name: eurekaserver_ms
+    ports:
+      - "8070:8070"
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "eurekaserver"
+
   accounts:
-    image: "monitranjan2050/accounts:s7"
+    image: "monitranjan2050/accounts:s8"
     container_name: account_ms
     ports:
       - "8080:8080"
@@ -56,10 +75,10 @@ services:
         condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 
   loans:
-    image: "monitranjan2050/loans:s7"
+    image: "monitranjan2050/loans:s8"
     container_name: loans_ms
     ports:
       - "8090:8090"
@@ -71,10 +90,10 @@ services:
           condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 
   cards:
-    image: "monitranjan2050/cards:s7"
+    image: "monitranjan2050/cards:s8"
     container_name: cards_ms
     ports:
       - "9000:9000"
@@ -86,7 +105,7 @@ services:
         condition: service_healthy
     extends:
       file: common-config.yml
-      service: microservice-configserver-config
+      service: microservice-eureka-config
 
 networks:
   microservices:

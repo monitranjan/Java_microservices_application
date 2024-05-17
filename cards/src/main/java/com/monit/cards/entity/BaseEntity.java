@@ -3,7 +3,9 @@ package com.monit.cards.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -13,23 +15,26 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@Getter
+@Setter
+@ToString
 @EntityListeners(AuditingEntityListener.class)
-@Data
 public class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @CreatedBy
+    @Column(updatable = false)
+    private String createdBy;
+
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime updatedAt;
 
-    @CreatedBy
-    @Column(insertable = false)
-    private String createdBy;
-
     @LastModifiedBy
     @Column(insertable = false)
     private String updatedBy;
+
 }

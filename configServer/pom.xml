@@ -11,6 +11,7 @@
 	<groupId>com.monit</groupId>
 	<artifactId>configserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>configserver</name>
 	<description>Config Services for microservices</description>
 	<properties>
@@ -56,7 +57,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>monitranjan2050/${project.artifactId}:s7</image>
+						<image>monitranjan2050/${project.artifactId}:s8</image>
 					</to>
 				</configuration>
 			</plugin>

@@ -1,5 +1,6 @@
 package com.monit.accounts.mapper;
 
+import com.monit.accounts.dto.CustomerDetailsDto;
 import com.monit.accounts.dto.CustomerDto;
 import com.monit.accounts.entity.Customer;
 
@@ -16,5 +17,12 @@ public class CustomerMapper {
         customer.setEmail(customerDto.getEmail());
         customer.setMobileNumber(customerDto.getMobileNumber());
         return customer;
+    }
+
+    public static CustomerDetailsDto maptoCustomerDetailsDto(Customer customer, CustomerDetailsDto customerDetailsDto) {
+        customerDetailsDto.setName(customer.getName());
+        customerDetailsDto.setEmail(customer.getEmail());
+        customerDetailsDto.setMobileNumber(customer.getMobileNumber());
+        return customerDetailsDto;
     }
 }
