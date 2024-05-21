@@ -6,6 +6,8 @@ import com.monit.accounts.dto.CustomerDto;
 import com.monit.accounts.dto.ErrorResponseDto;
 import com.monit.accounts.dto.ResponseDto;
 import com.monit.accounts.service.IAccountService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -193,9 +195,14 @@ public class AccountsController {
             )
     }
     )
+    @Retry(name = "getBuildInfo", fallbackMethod = "getBuildInfoFallback")
     @GetMapping("/version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity.ok(buildVersion);
+    }
+
+    public ResponseEntity<String> getBuildInfoFallback(Throwable throwable) {
+        return ResponseEntity.status(HttpStatus.OK).body("0.9");
     }
 
     @Operation(
@@ -216,9 +223,15 @@ public class AccountsController {
             )
     }
     )
+    @RateLimiter(name = "getJavaVersion",fallbackMethod = "getJavaVersionFallback")
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity.ok(environment.getProperty("JAVA_HOME"));
+    }
+
+    //fallback mechanism
+    public ResponseEntity<String> getJavaVersionFallback() {
+        return ResponseEntity.ok("Java 17");
     }
 
     @Operation(

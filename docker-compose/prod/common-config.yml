@@ -8,8 +8,8 @@ services:
     image: mysql
     healthcheck:
       test: [ "CMD","mysqladmin","ping","-h","localhost" ]
-      timeout: 10s
-      retries: 10
+      timeout: 15s
+      retries: 20
       interval: 10s
       start_period: 10s
     environment:
@@ -22,6 +22,10 @@ services:
       resources:
         limits:
           memory: 700m
+    environment:
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.32.0.jar"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_METRICS_EXPORTER: none
 
   microservice-configserver-config:
     extends:
