@@ -11,8 +11,8 @@ spring:
           enabled: false
           lowerCaseServiceId: true
     httpclient:
-      connect-timeout: 100000
-      response-timeout: 100s
+      connect-timeout: 1000
+      response-timeout: 20s
   data:
     redis:
       connect-timeout: 10s

@@ -8,10 +8,10 @@ services:
     image: mysql
     healthcheck:
       test: [ "CMD","mysqladmin","ping","-h","localhost" ]
-      timeout: 15s
+      timeout: 20s
       retries: 20
       interval: 10s
-      start_period: 10s
+      start_period: 60s
     environment:
       MYSQL_ROOT_PASSWORD: root
 
