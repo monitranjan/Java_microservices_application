@@ -2,7 +2,6 @@ package com.monit.accounts.service.impl;
 
 import com.monit.accounts.dto.AccountsDto;
 import com.monit.accounts.dto.CustomerDetailsDto;
-import com.monit.accounts.dto.CustomerDto;
 import com.monit.accounts.dto.LoansDto;
 import com.monit.accounts.entity.Accounts;
 import com.monit.accounts.entity.Customer;
@@ -42,12 +41,12 @@ public class CustomerServiceImpl implements ICustomerService {
         CustomerDetailsDto customerDetailsDto = CustomerMapper.maptoCustomerDetailsDto(customer,new CustomerDetailsDto());
         customerDetailsDto.setAccountDetails(AccountsMapper.maptoAccountsDto(accounts,new AccountsDto()));
 
-        ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoans(mobileNumber, correlationId);
+        ResponseEntity<LoansDto> loansDtoResponseEntity = loansFeignClient.fetchLoans(correlationId, mobileNumber);
         if (null != loansDtoResponseEntity) {
             customerDetailsDto.setLoansDetails(loansDtoResponseEntity.getBody());
         }
 
-        ResponseEntity<CardsDto> cardssDtoResponseEntity = cardsFeignClient.fetchCard(mobileNumber, correlationId);
+        ResponseEntity<CardsDto> cardssDtoResponseEntity = cardsFeignClient.fetchCard(correlationId, mobileNumber);
         if (null != cardssDtoResponseEntity) {
             customerDetailsDto.setCardsDetails(cardssDtoResponseEntity.getBody());
         }
