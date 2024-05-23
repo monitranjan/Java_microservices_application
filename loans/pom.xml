@@ -106,7 +106,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<to>
-						<image>monitranjan2050/${project.artifactId}:s11</image>
+						<image>monitranjan2050/${project.artifactId}:s13</image>
 					</to>
 				</configuration>
 			</plugin>

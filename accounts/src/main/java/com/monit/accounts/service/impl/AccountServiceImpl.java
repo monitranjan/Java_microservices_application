@@ -2,6 +2,7 @@ package com.monit.accounts.service.impl;
 
 import com.monit.accounts.constants.AccountConstants;
 import com.monit.accounts.dto.AccountsDto;
+import com.monit.accounts.dto.AccountsMsgDto;
 import com.monit.accounts.dto.CustomerDto;
 import com.monit.accounts.entity.Accounts;
 import com.monit.accounts.entity.Customer;
@@ -13,7 +14,10 @@ import com.monit.accounts.repository.AccountRepository;
 import com.monit.accounts.repository.CustomerRepository;
 import com.monit.accounts.service.IAccountService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,8 +26,12 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor(onConstructor_ = {@Autowired})
 public class AccountServiceImpl implements IAccountService {
+    private static Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
     private AccountRepository accountRepository;
     private CustomerRepository customerRepository;
+    private StreamBridge streamBridge;
+
+
     @Override
     public void createAccount(CustomerDto customerDto) {
     Customer customer = CustomerMapper.maptoCustomer(customerDto,new Customer());
@@ -32,7 +40,16 @@ public class AccountServiceImpl implements IAccountService {
         throw new CustomerAlreadyExitsException("Customer already exists with mobileNumber: " + customerDto.getMobileNumber());
     }
     Customer savedCustomer = customerRepository.save(customer);
-    accountRepository.save(createNewAccount(savedCustomer));
+    Accounts savedAccounts = accountRepository.save(createNewAccount(savedCustomer));
+    sendCommunication(savedAccounts,savedCustomer);
+    }
+
+    private void sendCommunication(Accounts account, Customer customer) {
+        AccountsMsgDto accountsMsgDto = new AccountsMsgDto(account.getAccountNumber(), customer.getName(),
+                customer.getEmail(), customer.getMobileNumber());
+        log.info("Sending Communication request for the details: {}", accountsMsgDto);
+        boolean result = streamBridge.send("sendCommunication-out-0", accountsMsgDto);
+        log.info("Is the Communication request successfully triggered ? : {}", result);
     }
 
     private Accounts createNewAccount(Customer customer) {
@@ -90,6 +107,20 @@ public class AccountServiceImpl implements IAccountService {
             customerRepository.deleteById(customer.getCustomerId());
         }
         return true;
+    }
+
+    @Override
+    public boolean updateCommunication(Long accountNumber) {
+        boolean isUpdated = false;
+        if (null != accountNumber) {
+            Accounts accounts = accountRepository.findById(accountNumber).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "AccountNumber", accountNumber.toString())
+            );
+            accounts.setCommunicationSw(true);
+            accountRepository.save(accounts);
+            isUpdated = true;
+        }
+        return isUpdated;
     }
 
 
